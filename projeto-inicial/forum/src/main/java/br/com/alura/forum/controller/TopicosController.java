@@ -1,15 +1,14 @@
 package br.com.alura.forum.controller;
 
 import java.net.URI;
-import java.util.List;
 import java.util.Optional;
 
 import javax.transaction.Transactional;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.web.PageableDefault;
@@ -44,8 +43,9 @@ public class TopicosController {
 	private CursoRepository cursoRepository;
 
 	@GetMapping
+	@Cacheable(value = "listaDeTopicos ")
 	public Page<TopicoDto> lista(
-			@RequestParam(required = false)String nomeCurso,@PageableDefault(sort = "id", direction = Direction.ASC, page = 0, size = 10) Pageable paginacao) {
+			@RequestParam(required = false)String nomeCurso,@PageableDefault(sort = "id", direction = Direction.ASC, page = 0, size = 24) Pageable paginacao) {
 		
 		/*	@RequestParam int pagina, 	
 		 * 	@RequestParam int quantidadeDeElementoDaPágina,	
