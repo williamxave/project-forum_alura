@@ -12,6 +12,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @EnableWebSecurity
 @Configuration
@@ -41,7 +42,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 		.antMatchers(HttpMethod.POST, "/auth").permitAll()
 		.anyRequest().authenticated()
 		.and().csrf().disable() // Desabilita csrf
-		.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS); // Isso diz para o Spring Security que nao é pra criar sessão pq vamos trabalhar com token
+		.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS) // Isso diz para o Spring Security que nao é pra criar sessão pq vamos trabalhar com token
+		.and().addFilterBefore(new AutentificacaoViaTokenFilter(), UsernamePasswordAuthenticationFilter.class); // fala pro spring usar primeiro o nosso filtro
 	}
 	
 	//Configuracao de recursos estatico(js,css,imagem,etc)
