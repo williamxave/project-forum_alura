@@ -28,6 +28,20 @@ public class Usuario  implements UserDetails{
 	@ManyToMany(fetch = FetchType.EAGER )
 	private List<Perfil> perfis = new ArrayList<>();
 
+	
+	public Usuario() {
+		
+	}
+	
+	
+	public List<Perfil> getPerfis() {
+		return perfis;
+	}
+
+	public void setPerfis(List<Perfil> perfis) {
+		this.perfis = perfis;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;

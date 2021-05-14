@@ -14,6 +14,8 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import br.com.alura.forum.repository.UsuarioRepository;
+
 @EnableWebSecurity
 @Configuration
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
@@ -23,6 +25,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	
 	@Autowired
 	private GeradorDeToken geradorDeToken;
+	
+	@Autowired
+	private UsuarioRepository usuarioRepository;
 	
 	@Bean
 	@Override
@@ -43,10 +48,13 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 		.antMatchers(HttpMethod.GET, "/topicos").permitAll()
 		.antMatchers(HttpMethod.GET, "/topicos/*").permitAll()
 		.antMatchers(HttpMethod.POST, "/auth").permitAll()
-		.anyRequest().authenticated()
+		.anyRequest().authenticated()// Essa linha diz que todos os controller que não estão aqui precisam ser autentificados para ser usados
 		.and().csrf().disable() // Desabilita csrf
 		.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS) // Isso diz para o Spring Security que nao é pra criar sessão pq vamos trabalhar com token
-		.and().addFilterBefore(new AutentificacaoViaTokenFilter(geradorDeToken), UsernamePasswordAuthenticationFilter.class); // fala pro spring usar primeiro o nosso filtro
+		// fala pro spring usar primeiro o nosso filtro e configura nossa AutentificacaoViaTokenFilter
+		//O spring já tem um filtro padrao e ele usa sempre ele, precisamos dizer para ele que deve usar o nosso primeiro .addFilterBefore() ai vem o nosso filtro e em seguida
+		//o filtro que nos vamos passar na frente que é o  padrao do spring UsernamePasswordAuthenticationFilter.class;
+		.and().addFilterBefore(new AutentificacaoViaTokenFilter(geradorDeToken, usuarioRepository), UsernamePasswordAuthenticationFilter.class); 
 	}
 	
 	//Configuracao de recursos estatico(js,css,imagem,etc)

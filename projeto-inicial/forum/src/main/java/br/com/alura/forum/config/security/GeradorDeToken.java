@@ -7,6 +7,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 import br.com.alura.forum.modelo.Usuario;
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 
@@ -47,5 +48,14 @@ public class GeradorDeToken {
 			return false;
 		}
 		
+	}
+
+	//Recupera o  id do usuário pelo tokem
+	//parseClaimsJws tem um metodo nele que é o getBody(); vai traser o corpo dele com isso conseguimos pegar o token em uma variavel
+	// agora com o token em mao conseguimos usar o metodo getSubject() que indicamos no método acima e que carrega o id do user ]
+	// agora que temos o id em mãos podemos continuar os trabalhos na classe AutentificacaoViaTokenFilter;
+	public Long getIdUsuario(String token) {
+		Claims body = Jwts.parser().setSigningKey(this.secret).parseClaimsJws(token).getBody();
+		return Long.parseLong(body.getSubject());
 	}
 }
