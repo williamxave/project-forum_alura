@@ -21,6 +21,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	@Autowired
 	private LogicaDeAutentificacao logicaDeAutentificacao;
 	
+	@Autowired
+	private GeradorDeToken geradorDeToken;
+	
 	@Bean
 	@Override
 	public AuthenticationManager authenticationManagerBean() throws Exception {
@@ -43,7 +46,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 		.anyRequest().authenticated()
 		.and().csrf().disable() // Desabilita csrf
 		.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS) // Isso diz para o Spring Security que nao é pra criar sessão pq vamos trabalhar com token
-		.and().addFilterBefore(new AutentificacaoViaTokenFilter(), UsernamePasswordAuthenticationFilter.class); // fala pro spring usar primeiro o nosso filtro
+		.and().addFilterBefore(new AutentificacaoViaTokenFilter(geradorDeToken), UsernamePasswordAuthenticationFilter.class); // fala pro spring usar primeiro o nosso filtro
 	}
 	
 	//Configuracao de recursos estatico(js,css,imagem,etc)

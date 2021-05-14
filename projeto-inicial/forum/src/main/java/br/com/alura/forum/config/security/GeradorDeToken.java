@@ -21,7 +21,7 @@ public class GeradorDeToken {
 	@Value("${forum.jwt.secret}")
 	private String secret;
 	
-	
+	//Cria o token
 	public String gerarToken(Authentication authentication) {
 		Usuario logado =  (Usuario) authentication.getPrincipal();  // Pega o user logado, retorna um optional por isso o cast
 		Date hoje = new Date();
@@ -34,4 +34,18 @@ public class GeradorDeToken {
 				.signWith(SignatureAlgorithm.HS256, secret) // criptocrafa 
 				.compact();
 			}
+
+	//Verifica se esse Token é valido
+	// O parser elerecebe o token descriptografa e verifica se é valido
+	//Chave que ele usa pra criptografar e descriptografar
+	//parseClaimsJws(token) retorna as informações dentro do token precisa por dentro de um try catch pq se o token for nullo joga uma exception
+	public boolean isTokenValid(String token) {
+		try {
+			Jwts.parser().setSigningKey(this.secret).parseClaimsJws(token);
+			return true;
+		} catch (Exception e) {
+			return false;
+		}
+		
 	}
+}

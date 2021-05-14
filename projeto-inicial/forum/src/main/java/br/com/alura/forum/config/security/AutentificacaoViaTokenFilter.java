@@ -11,14 +11,24 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 //Classe que vai mandar o token do usuário para o cabeçalho das requisições
 //PRECISAMOS FALAR PARA O SPRING SOBRE ESSA CLASSE E NAO É COM ANOTAÇÃO, VAMOS FAZER ISSO LA NA SecurityConfiguration
+//Em classe filters nao podemos usar o @Autowired
 public class AutentificacaoViaTokenFilter extends OncePerRequestFilter {
+
+	
+	private GeradorDeToken geradorDeToken;
+	
+	
+	public AutentificacaoViaTokenFilter(GeradorDeToken geradorDeToken) {
+		this.geradorDeToken = geradorDeToken;
+	}
 
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
 			throws ServletException, IOException {
 
 		String token = recuperToken(request);
-		System.out.println(token);
+		boolean valido = geradorDeToken.isTokenValid(token);
+		System.out.println(valido);
 		filterChain.doFilter(request, response);
 
 	}
