@@ -40,7 +40,6 @@ public class AutentificacaoViaTokenFilter extends OncePerRequestFilter {
 			autenticarCliente(token);
 		}
 		filterChain.doFilter(request, response);
-
 	}
 
 	//Se o usuário for válido, precisamos liberar o acesso pra ele, e vamos falar isso pro Spring com esse método

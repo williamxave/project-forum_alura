@@ -25,7 +25,7 @@ public class SwaggerConfiguration {
 	                .paths(PathSelectors.ant("/**"))
 	                .build()
 	                .ignoredParameterTypes(Usuario.class)
-	                .globalOperationParameters(
+	                .globalOperationParameters( // libera o campo de autorizacao no documentacao
 	                        Arrays.asList(
 	                                new ParameterBuilder()
 	                                    .name("Authorization")

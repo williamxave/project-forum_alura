@@ -10,4 +10,6 @@ public interface TopicoRepository extends JpaRepository<Topico, Long> {
 
 	Page<Topico> findByCursoNome(String nomeCurso, Pageable paginacao);
 
+	Page<Topico> findAll(Pageable paginacao);
+
 }
