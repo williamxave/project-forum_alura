@@ -49,6 +49,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 		.antMatchers(HttpMethod.GET, "/topicos/*").permitAll()
 		.antMatchers(HttpMethod.POST, "/auth").permitAll()
 		.antMatchers(HttpMethod.GET, "/actuator/**").permitAll()
+		.antMatchers(HttpMethod.DELETE, "/topicos/*").hasRole("MODERADOR")// Logica de Role só terá acesso a esse endpoint quem tem o perfil de MODERADOR
 		.anyRequest().authenticated()// Essa linha diz que todos os controller que não estão aqui precisam ser autentificados para ser usados
 		.and().csrf().disable() // Desabilita csrf
 		.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS) // Isso diz para o Spring Security que nao é pra criar sessão pq vamos trabalhar com token
