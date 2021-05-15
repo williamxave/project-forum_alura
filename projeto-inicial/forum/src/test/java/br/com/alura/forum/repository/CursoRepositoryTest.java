@@ -1,7 +1,5 @@
 package br.com.alura.forum.repository;
 
-import java.util.Optional;
-
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
