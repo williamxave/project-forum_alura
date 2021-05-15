@@ -44,7 +44,7 @@ public class TopicosController {
 	private CursoRepository cursoRepository;
 
 	@GetMapping
-	@Cacheable(value = "listaDeTopicos ")
+	@Cacheable(value = "listaDeTopicos")
 	public Page<TopicoDto> lista(
 			@RequestParam(required = false)String nomeCurso,@PageableDefault(sort = "id", direction = Direction.ASC, page = 0, size = 24) Pageable paginacao) {
 		
@@ -52,7 +52,6 @@ public class TopicosController {
 		 * 	@RequestParam int quantidadeDeElementoDaPágina,	
 		 * 	@RequestParam String ordenacao 
 		 */
-		
 		//Pageable paginacao = PageRequest.of(pagina, quantidadeDeElementoDaPágina, Direction.ASC, ordenacao);
 		
 		if (nomeCurso == null) {
@@ -81,7 +80,6 @@ public class TopicosController {
 		if (topico.isPresent()) {
 			return ResponseEntity.ok(new DetalhesDoTopicoDto(topico.get()));
 		}
-
 		return ResponseEntity.notFound().build();
 	}
 
@@ -94,7 +92,6 @@ public class TopicosController {
 			Topico topico = form.atualizar(id, topicoRepository);
 			return ResponseEntity.ok(new TopicoDto(topico));
 		}
-
 		return ResponseEntity.notFound().build();
 	}
 
@@ -106,8 +103,6 @@ public class TopicosController {
 			topicoRepository.deleteById(id);
 			return ResponseEntity.ok().build();
 		}
-
 		return ResponseEntity.notFound().build();
 	}
-
 }
